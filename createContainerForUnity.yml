@@ -1,0 +1,36 @@
+- name: Create LXC container on local Proxmox server
+  hosts: localhost
+  gather_facts: false
+  vars:
+    proxmox_host: "localhost"  # Proxmox API on localhost
+    proxmox_user: "root@pam"
+    proxmox_node: "proxmox" # for me, its just the host name
+    lxc_template: "local:vztmpl/ubuntu-24.10-standard_24.10-1_amd64.tar.zst" # path gotten from command "pvesh get /nodes/proxmox/storage/local/content" 
+    container_name: "unity-builder"
+    container_vmid: 240
+    container_ip: "192.168.1.240/24"
+    gateway_ip: "192.168.1.1"
+
+  tasks:
+    - name: Create LXC container
+      community.general.proxmox:
+        node: "{{ proxmox_node }}"
+        api_host: "{{ proxmox_host }}"
+        api_user: "{{ proxmox_user }}"
+        vmid: "{{ container_vmid }}"
+        state: present # default
+        storage: local-lvm # outputted by command "pvesh get /storage" 
+        ostemplate: "{{ lxc_template }}"
+        hostname: "{{ container_name }}"
+        memory: 16384  # Adjust memory size
+        cores: 4 # Adjust CPU core allocation
+        netif:
+          net0: "name=eth0,gw={{ gateway_ip }},ip={{ container_ip }},bridge=vmbr0"
+
+    - name: Start the LXC container
+      community.general.proxmox:
+        node: "{{ proxmox_node }}"
+        api_host: "{{ proxmox_host }}"
+        api_user: "{{ proxmox_user }}"
+        vmid: "{{ container_vmid }}"
+        state: started

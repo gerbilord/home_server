@@ -1,6 +1,28 @@
----
-- name: Install Proxmox module
+- name: Create Python Virtual Environment on localhost
   hosts: localhost
-  connection: local
-  become: yes  # Ensures privilege escalation if required
   tasks:
+    - name: Ensure the `python3-venv` package is installed
+      apt:
+        name: python3-venv
+        state: present
+      become: yes
+
+    - name: Create a virtual environment in /root/python_virtual_env
+      command: python3 -m venv /root/python_virtual_env
+      args:
+        creates: /root/python_virtual_env/bin/activate
+
+    - name: Ensure pip is up-to-date in the virtual environment
+      pip:
+        name: pip
+        state: latest
+
+    - name: Install required Python package proxmoxer
+      pip:
+        name: proxmoxer
+        state: present
+
+    - name: Install required Python package requests 
+      pip:
+        name: requests 
+        state: present

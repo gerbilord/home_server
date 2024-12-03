@@ -1,4 +1,7 @@
 all:
   hosts:
+    localhost:
+      ansible_connection: local
+      ansible_python_interpreter: "/root/python_virtual_env/bin/python" 
     unity_builder:
       ansible_host: 192.168.1.240
