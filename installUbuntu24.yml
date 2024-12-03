@@ -1,0 +1,26 @@
+- name: Download Proxmox OS template
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Check if template exists
+      ansible.builtin.stat:
+        path: "/var/lib/vz/template/cache/ubuntu-24.10-standard_24.10-1_amd64.tar.zst"
+      register: template_stat
+
+    - name: Download Ubuntu 24.10 template
+      ansible.builtin.shell:
+        cmd: "pveam download local ubuntu-24.10-standard_24.10-1_amd64.tar.zst"
+        creates: "/var/lib/vz/template/cache/ubuntu-24.10-standard_24.10-1_amd64.tar.zst"
+      register: download_result
+      when: not template_stat.stat.exists
+
+    - name: Verify template download
+      ansible.builtin.stat:
+        path: "/var/lib/vz/template/cache/ubuntu-24.10-standard_24.10-1_amd64.tar.zst"
+      register: verify_stat
+
+    - name: Fail if template is not downloaded
+      ansible.builtin.fail:
+        msg: "Template download failed!"
+      when: not verify_stat.stat.exists
+

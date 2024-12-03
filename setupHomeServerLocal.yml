@@ -1,0 +1,6 @@
+---
+- name: Install Proxmox module
+  hosts: localhost
+  connection: local
+  become: yes  # Ensures privilege escalation if required
+  tasks:
