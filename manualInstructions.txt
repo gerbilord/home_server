@@ -1,2 +1,3 @@
-export PROXMOX_PASSWORD="your-password" # needed to not expose password in repo
+add to .bashrc:
+   export PROXMOX_PASSWORD="your-password" # needed to not expose password in repo
 

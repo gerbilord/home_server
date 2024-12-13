@@ -1,0 +1,350 @@
+# Unity container notes:
+ip address
+ip link set eth0 up
+ip addr add 192.168.1.240/24 dev eth0
+ip address
+ip address show eth0
+
+ip route
+ip route add default via 192.168.1.1
+ip route
+
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+
+wget https://download.unity3d.com/download_unity/fb119bb0b476/LinuxEditorInstaller/Unity-2022.3.0f1.tar.xz
+tar -xf Unity-2022.3.0f1.tar.xz
+
+also had to resize from 4G to more
+
+pct resize 240 rootfs 50G
+
+history | cut -c 8-
+
+ping -c 4 8.8.8.8
+
+
+
+
+
+cd Editor/
+
+./Unity
+sudo apt install libgl1-mesa-glx libegl1-mesa
+sudo apt install libgl1 libgl1-mesa-dri libegl1
+sudo apt install libxcursor1
+sudo apt install libxrandr2
+sudo apt install libgtk-3-0
+./Unity -batchmode -nographics
+history | cut -c 8-
+    1  unityhub --headless --no-sandbox --disable-gpu --disable-software-rasterizer
+    2  strace unityhub --headless --no-sandbox --disable-gpu --disable-software-rasterizer
+    3  history
+unitybuilder@unity-builder:~$ exit
+logout
+root@unity-builder:~# history
+    1  ip address
+    2  ip link set eth0 up
+    3  ip address
+    4  ip address show eth0
+    5  exit
+    6  wget https://download.unity3d.com/download_unity/fb119bb0b476/LinuxEditorInstaller/Unity-2022.3.0f1.tar.xz
+    7  ip address
+    8  ping -c 4 8.8.8.8
+    9  ip route
+   10  ip route add default via <gateway-ip>
+   11  ip route add default via 192.168.1.1
+   12  ip route
+   13  ping -c 4 8.8.8.8
+   14  wget https://download.unity3d.com/download_unity/fb119bb0b476/LinuxEditorInstaller/Unity-2022.3.0f1.tar.xz
+   15  ls
+   16  cd root
+   17  ls
+   18  pwd
+   19  wget https://download.unity3d.com/download_unity/fb119bb0b476/LinuxEditorInstaller/Unity-2022.3.0f1.tar.xz
+   20  curl https://download.unity3d.com/download_unity/fb119bb0b476/LinuxEditorInstaller/Unity-2022.3.0f1.tar.xz
+   21  wget https://download.unity3d.com/download_unity/fb119bb0b476/LinuxEditorInstaller/Unity-2022.3.0f1.tar.xz
+   22  ping -c 4 8.8.8.8
+   23  vi /etc/resolv.conf
+   24  ls
+   25  clear
+   26  echo "nameserver 8.8.8.8
+   27  nameserver 8.8.4.4
+   28  quit
+   29  echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+   30  echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+   31  wget https://download.unity3d.com/download_unity/fb119bb0b476/LinuxEditorInstaller/Unity-2022.3.0f1.tar.xz
+   32  tar -xf Unity-2022.3.0f1.tar.xz
+   33  ls
+   34  cd editor
+   35  ls
+   36  cd Editor/
+   37  ls
+   38  cd ..
+   39  rm -r Editor
+   40  exit
+   41  history
+   42  man history
+   43  history | cut -c 8-
+   44  exit
+   45  tar -xf Unity-2022.3.0f1.tar.xz
+   46  ls
+   47  cd root
+   48  tar -xf Unity-2022.3.0f1.tar.xz
+   49  ls
+   50  cd Editor
+   51  ls
+   52  cd ..
+   53  apt install git
+   54  sudo apt update
+   55  apt install git
+   56  git --version
+   57  apt-get git
+   58  apt-get update --fix-missing
+   59  apt install git
+   60  sudo apt-get update
+   61  ping 8.8.8.8
+   62  ping -c 4 8.8.8.8
+   63  ipconfig
+   64  ip address
+   65  ip link set eth0 up
+   66  ip address
+   67  ip address show eth0
+   68  ip route add default via 192.168.1.1
+   69  ip address
+   70  cd root
+   71  ls
+   72  ip address
+   73  ip addr add 192.168.1.240/24 dev eth0
+   74  ip address
+   75  apt install git
+   76  sudo apt-get update
+   77  ping -c 4 8.8.8.8
+   78  ip address'
+   79  ip address
+   80  ip route add default via 192.168.1.1
+   81  ping -c 4 8.8.8.8
+   82  sudo apt-get update
+   83  apt install git
+   84  git clone https://github.com/gerbilord/TDDB.git
+   85  git branch
+   86  ls
+   87  pwd
+   88  /opt/Unity/Editor/Unity -quit -batchmode -nographics -buildTarget WebGL -executeMethod Builder.Build -projectPath /root/TDDB -logFile /root/build.log -outputPath /root/TDDB/Builds/WebGL
+   89  cd Editor/
+   90  ls
+   91  /opt/Unity/Editor/Unity -quit -batchmode -nographics -buildTarget WebGL -executeMethod Builder.Build -projectPath /root/TDDB -logFile /root/build.log -outputPath /root/TDDB/Builds/WebGL
+   92  /Unity -quit -batchmode -nographics -buildTarget WebGL -executeMethod Builder.Build -projectPath /root/TDDB -logFile /root/build.log -outputPath /root/TDDB/Builds/WebGL
+   93  ls
+   94  Unity
+   95  ./Unity
+   96  sudo apt install libgl1-mesa-glx libegl1-mesa
+   97  sudo apt update
+   98  sudo apt install libgl1-mesa-glx libegl1-mesa
+   99  apt search libgl1
+  100  apt search libegl1
+  101  apt search libgl1
+  102  apt search libegl1
+  103  sudo apt install libgl1 libgl1-mesa-dri libegl1
+  104  ./Unity -batchmode -nographics
+  105  sudo apt install libxcursor1
+  106  ./Unity -batchmode -nographics
+  107  sudo apt install libxrandr2
+  108  ./Unity -batchmode -nographics
+  109  sudo apt install libgtk-3-0
+  110  ./Unity -batchmode -nographics
+  111  ls
+  112  ./Unity -batchmode -nographics
+  113  history | cut -c 8-
+  114  ./Unity -batchmode -nographics -username "your-email@example.com" -password "your-password" -logFile
+  115  ./Unity -batchmode -nographics -username "cois.alessandro@gmail.com" -password "uH@M$ter167943Y" -logFile
+  116  ugs login
+  117  ./Unity
+  118  ./Unity -batchmode -nographics
+  119  ./Unity -batchmode -nographics -username "cois.alessandro@gmail.com" -password "uH@M$ter167943Y" -logFile
+  120  curl -I https://core.cloud.unity3d.com/api/login
+  121  apt install curl
+  123  curl -X POST https://core.cloud.unity3d.com/api/login
+  124  wget -qO - https://hub.unity3d.com/linux/keys/public | gpg --dearmor | sudo tee /usr/share/keyrings/Unity_Technologies_ApS.gpg > /dev/null
+  125  sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/Unity_Technologies_ApS.gpg] https://hub.unity3d.com/linux/repos/deb stable main" > /etc/apt/sources.list.d/unityhub.list'
+  126  sudo apt update
+  127  sudo apt-get install unityhub
+  128  sudo apt update
+  129  ./Unity -batchmode -createManualActivationFile -logFile /dev/stdout
+  130  ls
+  131  cat Unity_v2022.3.0f1.alf
+  132  sudo apt update
+  133  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BE3E6EA534E8243F
+  134  sudo apt update
+  135  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BE3E6EA534E8243F
+  136  echo "deb [signed-by=/usr/share/keyrings/unity-keyring.gpg] https://hub.unity3d.com/linux/repos/deb stable main" | sudo tee /etc/apt/sources.list.d/unityhub.list
+  137  sudo apt update
+  138  lsb_release -a
+  139  wget -qO - https://hub.unity3d.com/linux/keys/public | gpg --dearmor | sudo tee /usr/share/keyrings/Unity_Technologies_ApS.gpg > /dev/null
+  140  sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/Unity_Technologies_ApS.gpg] https://hub.unity3d.com/linux/repos/deb stable main" > /etc/apt/sources.list.d/unityhub.list'
+  141  sudo apt update
+  142  wget -qO - https://hub.unity3d.com/linux/keys/public | gpg --dearmor | sudo tee /usr/share/keyrings/Unity_Technologies_ApS.gpg > /dev/null
+  143  sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/Unity_Technologies_ApS.gpg] https://hub.unity3d.com/linux/repos/deb stable main" > /etc/apt/sources.list.d/unityhub.list'
+  144  sudo apt-get install unityhub
+  145  sudo apt install unityhub
+  146  https://hub.unity3d.com/linux/repos/deb stable main" > /etc/apt/sources.list.d/unityhub.list'
+  147  sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/Unity_Technologies_ApS.gpg] https://hub.unity3d.com/linux/repos/deb stable main" > /etc/apt/sources.list.d/unityhub.list'
+  148  sudo apt update
+  149  sudo apt-get install unityhub
+  150  wget -o- https://hub.unity3d.com/linux/keys/public
+  151  file public
+  152  gpg --no-default-keyring --keyring ./unity_keyring.gpg --import public
+  153  gpg --no-default-keyring --keyring ./unity_keyring.gpg --export > ./unity-archive-keyring.gpg
+  154  sudo mv ./unity-archive-keyring.gpg /etc/apt/trusted.gpg.d/
+  155  apt install gpg
+  156  wget -o- https://hub.unity3d.com/linux/keys/public
+  157  file public
+  158  gpg --no-default-keyring --keyring ./unity_keyring.gpg --import public
+  159  gpg --no-default-keyring --keyring ./unity_keyring.gpg --export > ./unity-archive-keyring.gpg
+  160  sudo mv ./unity-archive-keyring.gpg /etc/apt/trusted.gpg.d/
+  161  sudo apt-get install unityhub
+  162  sudo apt update
+  163  ls
+  164  cd TDDB/
+  165  ls
+  166  git pull
+  167  cd ..
+  168  ls
+  169  ./Editor/Unity -quit -bachmode -projectPath ./TDDB/ -executeMethod BuildScript.PerformBuild
+  170  ./Editor/Unity -quit -batchmode -nographics -projectPath ./TDDB/ -executeMethod BuildScript.PerformBuild
+  171  history
+  172  ls /usr/share/keyrings
+  173  wget -qO - https://hub.unity3d.com/linux/keys/public | gpg --dearmor | sudo tee /usr/share/keyrings/Unity_Technologies_ApS.gpg > /dev/null
+  174  ls /usr/share/keyrings
+  175  sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/Unity_Technologies_ApS.gpg] https://hub.unity3d.com/linux/repos/deb stable main" > /etc/apt/sources.list.d/unityhub.list'
+  176  cat /etc/apt/sources.list.d/unityhub.list
+  177  sudo apt update
+  178  sudo apt install unityhub
+  179  apt install unityhub
+  180  sudo apt install desktop-file-utils
+  181  sudo apt install apparmor apparmor-utils
+  182  sudo systemctl enable apparmor
+  183  sudo systemctl start apparmor
+  184  sudo apt-get install -f
+  185  sudo dpkg --configure -a
+  186  sudo apt remove unityhub
+  187  sudo apt install desktop-file-utils apparmor apparmor-utils
+  188  sudo apt update
+  189  sudo apt install unityhub
+  190  apparmor --version
+  191  sudo apt remove unityhub
+  192  root@unity-builder:~# sudo apt install unityhub
+  193  Installing:
+  194  Summary:
+  195  Y
+  196  perl: warning: Setting locale failed.
+  197  perl: warning: Please check that your locale settings:
+  198  perl: warning: Falling back to the standard locale ("C").
+  199  locale: Cannot set LC_CTYPE to default locale: No such file or directory
+  200  locale: Cannot set LC_MESSAGES to default locale: No such file or directory
+  201  locale: Cannot set LC_ALL to default locale: No such file or directory
+  202  Selecting previously unselected package unityhub.
+  203  (Reading database ... 36021 files and directories currently installed.)
+  204  Preparing to unpack .../unityhub_3.10.0_amd64.deb ...
+  205  Unpacking unityhub (3.10.0) ...
+  206  Setting up unityhub (3.10.0) ...
+  207  update-alternatives is /usr/bin/update-alternatives
+  208  apparmor_parser: Unable to replace "unityhub".  apparmor_parser: Access denied. You need policy admin privileges to manage profiles.
+  209  dpkg: error processing package unityhub (--configure):
+  210  Processing triggers for hicolor-icon-theme (0.18-1) ...
+  211  Processing triggers for desktop-file-utils (0.27-2build1) ...
+  212  Errors were encountered while processing:
+  213  Error: Sub-process /usr/bin/dpkg returned an error code (1)
+  214  root@unity-builder:~#root@unity-builder:~# sudo apt install unityhub
+  215  Installing:
+  216  Summary:
+  217  Y
+  218  perl: warning: Setting locale failed.
+  219  perl: warning: Please check that your locale settings:
+  220  perl: warning: Falling back to the standard locale ("C").
+  221  locale: Cannot set LC_CTYPE to default locale: No such file or directory
+  222  locale: Cannot set LC_MESSAGES to default locale: No such file or directory
+  223  locale: Cannot set LC_ALL to default locale: No such file or directory
+  224  Selecting previously unselected package unityhub.
+  225  (Reading database ... 36021 files and directories currently installed.)
+  226  Preparing to unpack .../unityhub_3.10.0_amd64.deb ...
+  227  Unpacking unityhub (3.10.0) ...
+  228  Setting up unityhub (3.10.0) ...
+  229  update-alternatives is /usr/bin/update-alternatives
+  230  apparmor_parser: Unable to replace "unityhub".  apparmor_parser: Access denied. You need policy admin privileges to manage profiles.
+  231  dpkg: error processing package unityhub (--configure):
+  232  Processing triggers for hicolor-icon-theme (0.18-1) ...
+  233  Processing triggers for desktop-file-utils (0.27-2build1) ...
+  234  Errors were encountered while processing:
+  235  Error: Sub-process /usr/bin/dpkg returned an error code (1)
+  236  root@unity-builder:~#sudo apt install apparmor apparmor-utils
+  237  sudo apt install apparmor apparmor-utils
+  238  sudo systemctl enable apparmor
+  239  sudo apt update
+  240  sudo locale-gen en_US.UTF-8
+  241  locale
+  242  sudo systemctl enable apparmor
+  243  sudo systemctl start apparmor
+  244  zcat /proc/config.gz | grep APPARMOR
+  245  systemd-detect-virt
+  246  sudo apt install unityhub
+  247  unityhub
+  248  sudo apt install libasound2
+  249  sudo apt install libasound2-data
+  250  unityhub --headless
+  251  unityhub --headless --no-sandbox
+  252  unityhub --headless --no-sandbox help
+  253  cat /proc/cpuinfo
+  254  cat /proc/cpuinfo | grep SSE
+  255  cat /proc/cpuinfo | grep SSE2
+  256  cat /proc/cpuinfo | grep AVX
+  257  unityhub --headless --no-sandbox --disable-gpu --disable-software-rasterizer
+  258  adduser unitybuilder
+  259  su - unitybuilder
+  260  history
+
+
+  502  wget https://releases.ubuntu.com/24.10/ubuntu-24.10-live-server-amd64.iso
+  503  ls
+  504  mv ubuntu-24.10-live-server-amd64.iso /var/lib/vz/template/iso/
+  505  qm remove 241
+  506  qm status 241
+  507  qm destroy 241
+  508  qm create 241 --name unity-vm --memory 5000 --cores 4 --net0 virtio,bridge=vmbr0
+  509  qm set 241 --cdrom local:iso:ubuntu-24.10.live-server-amd64.iso
+  510  qm set 241 --cdrom /var/lib/vz/template/iso/ubuntu-24.10-live-server-amd64.iso
+  511  qm set 241 --scsihw virtio-scsi-pci --scsi0 local:vm-241-disk-0,size=30G
+  512  pveam list
+  513  pveam list local
+  514  qm set 241 --scsihw virtio-scsi-pci --scsi0 local:vm-241-disk-0,size=30G
+  515  pvesm status
+  516  qm set 241 --scsihw virtio-scsi-pci --scsi0 local-lvm:30G
+  517  qm set 241 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-241-disk-0,size=30G
+  518  qm resize 241 scsi0 30G
+  519  qm set 241 --scsihw virtio-scsi-pci --scsi0 local-lvm:30G
+  520  qm config 241
+  521  clear
+  522  qm config 241
+  523  qm resize 241 scsi0 +20G
+  524  qm config 241
+  525  qm set 241 -scsi0 local-lvm:20
+  526  qm config 241
+  527  qm set 241 -scsi0 local-lvm:40
+  528  qm config 241
+  529  qm config 241
+  530  qm start 241
+  531  egrep -o 'vmx|svm' /proc/cpuinfo
+  532  cat /proc/cpuinfo
+  533  lscpu
+  534  qm start 241
+  535  cat /etc/pve/qemu-server/241.conf
+  536  echo "args: -no-kvm" >> /etc/pve/qemu-server/241.conf
+  537  qm start 241
+  538  cat /etc/pve/qemu-server/241.conf
+  539  qm start 241
+  540  qm set 241 --cpu qemu64
+  541  qm start 241
+  542  qm set 241 --args "-machine pc,kvm=off"
+  543  qm start 241
+  544  vi /etc/pve/qemu-server/241.conf
+  545  qm start 241
