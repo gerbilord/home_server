@@ -1,0 +1,54 @@
+- name: Create VM on local Proxmox server for unity
+  hosts: localhost
+  gather_facts: false
+  vars:
+    proxmox_host: "localhost"  # Proxmox API on localhost
+    proxmox_user: "root@pam"
+    proxmox_node: "proxmox" # for me, its just the host name
+    os_iso: "local:iso/ubuntu-24.10-live-server-amd64.iso" # path gotten from command "pvesh get /nodes/proxmox/storage/local/content" 
+    vm_name: "unity-builder"
+    vmid: 240
+    vm_ip: "192.168.1.240/24"
+    gateway_ip: "192.168.1.1"
+
+  tasks:
+    - name: Create VM for unity
+      become: true
+      community.general.proxmox_kvm:
+        node: "{{ proxmox_node }}"
+        name: "{{ vm_name }}"
+        api_host: "{{ proxmox_host }}"
+        api_user: "{{ proxmox_user }}"
+        ciuser: "unity-builder"
+        cipassword: "{{ lookup('ansible.builtin.env', 'PROXMOX_PASSWORD') }}"
+        citype: nocloud
+        vmid: "{{ vmid }}"
+        state: present # default
+        storage: local-lvm # outputted by command "pvesh get /storage" 
+        memory: 16384  # Adjust memory size
+        cores: 4 # Adjust CPU core allocation
+        kvm: true
+        virtio:
+          virtio0: 'local-lvm:40'
+        net:
+          net0: 'virtio,bridge=vmbr0'
+        ipconfig:
+          ipconfig0: 'ip={{ vm_ip }},gw={{ gateway_ip }}'
+
+    - name: Attach ISO
+      community.general.proxmox_disk:
+        api_host: "{{ proxmox_host }}"
+        api_user: "{{ proxmox_user }}"
+        vmid: "{{ vmid }}"
+        disk: ide2
+        media: cdrom
+        iso_image: "{{ os_iso }}"
+        state: present
+
+    - name: Start the VM
+      community.general.proxmox_kvm:
+        node: "{{ proxmox_node }}"
+        api_host: "{{ proxmox_host }}"
+        api_user: "{{ proxmox_user }}"
+        vmid: "{{ vmid }}"
+        state: started

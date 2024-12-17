@@ -5,3 +5,6 @@ all:
       ansible_python_interpreter: "/root/python_virtual_env/bin/python" 
     unity_builder:
       ansible_host: 192.168.1.240
+      ansible_user: unity-builder
+      ansible_password: "{{ lookup('env', 'PROXMOX_PASSWORD') }}"
+

@@ -22,7 +22,11 @@
         name: proxmoxer
         state: present
 
-    - name: Install required Python package requests 
+    - name: Install required Python package requests
       pip:
-        name: requests 
+        name: requests
         state: present
+
+    - name: Update ansible
+      pip:
+        name: ansible== 11.1.0

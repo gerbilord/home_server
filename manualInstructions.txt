@@ -1,3 +1,4 @@
 add to .bashrc:
    export PROXMOX_PASSWORD="your-password" # needed to not expose password in repo
 
+ansible-galaxy collection install community.general

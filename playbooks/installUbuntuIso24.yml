@@ -1,0 +1,25 @@
+- name: Download Proxmox Ubuntu Iso
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Check if template exists
+      ansible.builtin.stat:
+        path: "/var/lib/vz/template/iso/ubuntu-24.10-live-server-amd64.iso"
+      register: template_stat
+
+    - name: Download Ubuntu 24 Iso
+      ansible.builtin.shell:
+        cmd: "wget https://releases.ubuntu.com/24.10/ubuntu-24.10-live-server-amd64.iso -P /var/lib/vz/template/iso/"
+        creates: "/var/lib/vz/template/iso/ubuntu-24.10-live-server-amd64.iso"
+      register: download_result
+      when: not template_stat.stat.exists
+
+    - name: Verify template download
+      ansible.builtin.stat:
+        path: "/var/lib/vz/template/iso/ubuntu-24.10-live-server-amd64.iso"
+      register: verify_stat
+
+    - name: Fail if template is not downloaded
+      ansible.builtin.fail:
+        msg: "Iso download failed!"
+      when: not verify_stat.stat.exists
