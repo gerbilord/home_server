@@ -2,6 +2,7 @@
 # Ale tavern server notes
 ##################################
 ansible-playbook playbooks/master_fullSetupAleTavernServer.yml
+# this may be needed: pct resize 241 rootfs 20G
 pct enter 242
 
 # internet setup
@@ -10,10 +11,15 @@ ip link set eth0 up
 ip route add default via 192.168.1.1
 echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 
+passwd # unsure what default password is
+sudo sed -i 's/^#PermitRootLogin prohibit-password$/PermitRootLogin yes/' /etc/ssh/sshd_config
+sudo systemctl restart sshd
+
+
 apt-get update
 sudo apt install git
 
-https://github.com/gerbilord/aletavern.git
+git clone https://github.com/gerbilord/aletavern.git
 
 ##################################
 # Unity container notes:
