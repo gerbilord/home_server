@@ -1,3 +1,23 @@
+##################################
+# Ale tavern server notes
+##################################
+ansible-playbook playbooks/master_fullSetupAleTavernServer.yml
+pct enter 242
+
+# internet setup
+ip addr add 192.168.1.242/24 dev eth0
+ip link set eth0 up
+ip route add default via 192.168.1.1
+echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+
+apt-get update
+sudo apt install git
+
+https://github.com/gerbilord/aletavern.git
+
+##################################
+# Unity container notes:
+##################################
 # Unity container notes:
 ip address
 ip link set eth0 up
