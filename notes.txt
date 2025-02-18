@@ -20,6 +20,15 @@ apt-get update
 sudo apt install git
 
 git clone https://github.com/gerbilord/aletavern.git
+apt install curl
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+nvm install 16 # had to close and open terminal
+npm install
+npm audit fix # rip this won't fix vunerablities
+
+npm run start
+
+http://192.168.1.242:5656/
 
 ##################################
 # Unity container notes:
