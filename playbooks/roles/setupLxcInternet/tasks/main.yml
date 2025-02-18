@@ -1,0 +1,21 @@
+---
+- name: Check if /etc/resolv.conf in container already has nameserver 8.8.4.4
+  command: pct exec {{ container_vmid }} -- grep "nameserver 8.8.4.4" /etc/resolv.conf
+  register: resolv_conf_check
+  ignore_errors: yes
+
+- name: Configure container networking and add nameserver if missing
+  block:
+    - name: Add IP address to eth0 in container
+      command: pct exec {{ container_vmid }} -- ip addr add {{ container_ip.split('/')[0] }}/24 dev eth0
+
+    - name: Bring eth0 up in container
+      command: pct exec {{ container_vmid }} -- ip link set eth0 up
+
+    - name: Add default route in container
+      command: pct exec {{ container_vmid }} -- ip route add default via {{ gateway_ip }}
+
+    - name: Append nameserver to /etc/resolv.conf in container
+      command: pct exec {{ container_vmid }} -- sh -c "echo 'nameserver 8.8.4.4' >> /etc/resolv.conf"
+  when: resolv_conf_check.rc != 0
+

@@ -1,0 +1,24 @@
+---
+- name: Create LXC container
+  community.general.proxmox:
+    node: "{{ proxmox_node }}"
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    vmid: "{{ container_vmid }}"
+    state: present
+    storage: local-lvm
+    ostemplate: "{{ lxc_template }}"
+    hostname: "{{ container_name }}"
+    memory: 40000
+    cores: 4
+    netif:
+      net0: "name=eth0,gw={{ gateway_ip }},ip={{ container_ip }},bridge=vmbr0"
+
+- name: Start the LXC container
+  community.general.proxmox:
+    node: "{{ proxmox_node }}"
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    vmid: "{{ container_vmid }}"
+    state: started
+
