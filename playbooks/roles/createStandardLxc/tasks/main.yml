@@ -11,8 +11,9 @@
     hostname: "{{ container_name }}"
     memory: 40000
     cores: 4
+    unprivileged: 1
     netif:
-      net0: "name=eth0,gw={{ gateway_ip }},ip={{ container_ip }},bridge=vmbr0"
+      net0: "name=eth0,gw={{ gateway_ip }},ip={{ container_ip }},firewall=1,bridge=vmbr0"
 
 - name: Start the LXC container
   community.general.proxmox:
