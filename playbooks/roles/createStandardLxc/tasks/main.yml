@@ -3,43 +3,28 @@
     node: "{{ proxmox_node }}"
     api_host: "{{ proxmox_host }}"
     api_user: "{{ proxmox_user }}"
+    password: "{{ proxmox_password }}"
     vmid: "{{ container_vmid }}"
     state: present
     ostemplate: "{{ lxc_template }}"
-    storage: local-lvm
+    disk: "local-lvm:20"
     hostname: "{{ container_name }}"
-    memory: 40000
+    memory: 16000
     cores: 4
     unprivileged: 1
-    netif:
-      net0: "name=eth0,gw={{ gateway_ip }},ip={{ container_ip }},firewall=1,bridge=vmbr0"
+    netif: '{"net0":"name=eth0,gw={{ gateway_ip }},ip={{ container_ip }},firewall=1,bridge=vmbr0"}'
 
 - name: Get container status
   command: "pct status {{ container_vmid }}"
   register: container_status
   changed_when: false
 
-# - name: Get info about LXC
-#   community.general.proxmox_vm_info:
-#     node: "{{ proxmox_node }}"
-#     api_host: "{{ proxmox_host }}"
-#     api_user: "{{ proxmox_user }}"
-#     vmid: "{{ container_vmid }}"
-#     type: lxc
-
-
-- name: Debug container status
-  debug:
-    msg: "Container {{ container_vmid }} current status: {{ container_status.stdout }}"
-
-- name: Make container correct size
-  command: "pct resize {{ container_vmid }} rootfs 20G"
-  when: "'status: stopped' in container_status.stdout"
-
 - name: Make sure container is started
   community.general.proxmox:
     vmid: "{{ container_vmid}}"
-    api_host: "{{ proxmox_host }}"
+    node: "{{ proxmox_node }}"
     api_user: "{{ proxmox_user }}"
+    api_host: "{{ proxmox_host }}"
+    api_password: "{{ proxmox_password }}"
     state: started
-  when: "'status: stopped' in container_status.stdout"
+  when: "'status: stopped' in container_status.stdout" # When shouldn't be needed, but for some reason, this task isn't idempotent when it should be
