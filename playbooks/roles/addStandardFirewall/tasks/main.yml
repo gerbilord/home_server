@@ -1,0 +1,10 @@
+- name: Copy firewall rule file to Proxmox
+  copy:
+    src: "{{ container_vmid }}.fw"
+    dest: "/etc/pve/firewall/{{ container_vmid }}.fw"
+    unsafe_writes: true
+
+- name: Restart pve-firewall service
+  command: pve-firewall restart
+  become: true
+

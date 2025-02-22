@@ -1,13 +1,12 @@
----
-- name: Create LXC container
+- name: Create LXC container if missing
   community.general.proxmox:
     node: "{{ proxmox_node }}"
     api_host: "{{ proxmox_host }}"
     api_user: "{{ proxmox_user }}"
     vmid: "{{ container_vmid }}"
     state: present
-    storage: local-lvm
     ostemplate: "{{ lxc_template }}"
+    storage: local-lvm
     hostname: "{{ container_name }}"
     memory: 40000
     cores: 4
@@ -15,11 +14,32 @@
     netif:
       net0: "name=eth0,gw={{ gateway_ip }},ip={{ container_ip }},firewall=1,bridge=vmbr0"
 
-- name: Start the LXC container
+- name: Get container status
+  command: "pct status {{ container_vmid }}"
+  register: container_status
+  changed_when: false
+
+# - name: Get info about LXC
+#   community.general.proxmox_vm_info:
+#     node: "{{ proxmox_node }}"
+#     api_host: "{{ proxmox_host }}"
+#     api_user: "{{ proxmox_user }}"
+#     vmid: "{{ container_vmid }}"
+#     type: lxc
+
+
+- name: Debug container status
+  debug:
+    msg: "Container {{ container_vmid }} current status: {{ container_status.stdout }}"
+
+- name: Make container correct size
+  command: "pct resize {{ container_vmid }} rootfs 20G"
+  when: "'status: stopped' in container_status.stdout"
+
+- name: Make sure container is started
   community.general.proxmox:
-    node: "{{ proxmox_node }}"
+    vmid: "{{ container_vmid}}"
     api_host: "{{ proxmox_host }}"
     api_user: "{{ proxmox_user }}"
-    vmid: "{{ container_vmid }}"
     state: started
-
+  when: "'status: stopped' in container_status.stdout"

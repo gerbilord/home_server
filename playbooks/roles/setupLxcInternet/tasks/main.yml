@@ -15,7 +15,7 @@
     - name: Add default route in container
       command: pct exec {{ container_vmid }} -- ip route add default via {{ gateway_ip }}
 
-    - name: Append nameserver to /etc/resolv.conf in container
-      command: pct exec {{ container_vmid }} -- sh -c "echo 'nameserver 8.8.4.4' >> /etc/resolv.conf"
+    - name: Set nameserver to /etc/resolv.conf in container
+      command: pct exec {{ container_vmid }} -- sh -c "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
   when: resolv_conf_check.rc != 0
 

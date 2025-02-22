@@ -16,4 +16,5 @@
     - setupPythonEnvAndInstallPackagesOnProxmox
     - installUbuntuOnProxmox
     - createStandardLxc
+    - addStandardFirewall
     - setupLxcInternet
