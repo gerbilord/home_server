@@ -1,0 +1,21 @@
+- name: Create Caddy container on local Proxmox server
+  hosts: localhost
+  gather_facts: false
+  become: true
+  vars:
+    proxmox_host: "localhost"  # Proxmox API on localhost
+    proxmox_user: "root@pam"
+    proxmox_node: "proxmox" # for me, its just the host name
+    proxmox_password: "{{ lookup('ansible.builtin.env', 'PROXMOX_PASSWORD') }}"
+    lxc_template: "local:vztmpl/ubuntu-24.10-standard_24.10-1_amd64.tar.zst" # path gotten from command "pvesh get /nodes/proxmox/storage/local/content"
+    container_name: "caddy"
+    container_vmid: 240
+    container_ip: "192.168.1.240/24"
+    gateway_ip: "192.168.1.1"
+
+  roles:
+    - setupPythonEnvAndInstallPackagesOnProxmox
+    - installUbuntuOnProxmox
+    - createStandardLxc
+    - addStandardFirewall
+    - setupLxcInternet
