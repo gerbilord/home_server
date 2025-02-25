@@ -1,10 +1,14 @@
 - name: Copy firewall rule file to Proxmox
   copy:
     src: "{{ container_vmid }}.fw"
-    dest: "/etc/pve/firewall/{{ container_vmid }}.fw"
-    unsafe_writes: true
+    dest: "/tmp/{{ container_vmid }}.fw"
+    # dest: "/etc/pve/firewall/{{ container_vmid }}.fw" # mount | grep /etc/pve -> something about fuse
+
+# consider using pvesh get /nodes/proxmox/lxc/241/firewall/rules instead of direct cp
+- name: Move file from temp to final destination with elevated privileges
+  command: "cp /tmp/{{ container_vmid }}.fw /etc/pve/firewall/{{ container_vmid }}.fw"
+  become: yes
 
 - name: Restart pve-firewall service
   command: pve-firewall restart
   become: true
-

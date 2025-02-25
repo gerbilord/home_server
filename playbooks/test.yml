@@ -1,0 +1,13 @@
+- name: Create LXC container on local Proxmox server
+  hosts: proxmox
+  remote_user: root
+  gather_facts: false
+  become: true
+  vars:
+    lxc_template: "{{ debianTemplate }}"
+    container_name: "ale-tavern-server"
+    container_vmid: 242
+
+  roles:
+    - addStandardFirewall
+
