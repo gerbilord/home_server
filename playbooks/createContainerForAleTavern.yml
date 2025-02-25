@@ -1,9 +1,10 @@
 - name: Create LXC container on local Proxmox server
-  hosts: localhost
+  hosts: proxmox
+  remote_user: root 
   gather_facts: false
   become: true
   vars:
-    proxmox_host: "localhost"  # Proxmox API on localhost
+    proxmox_host: "proxmox"  # Proxmox API on localhost
     proxmox_user: "root@pam"
     proxmox_node: "proxmox" # for me, its just the host name
     proxmox_password: "{{ lookup('ansible.builtin.env', 'PROXMOX_PASSWORD') }}"

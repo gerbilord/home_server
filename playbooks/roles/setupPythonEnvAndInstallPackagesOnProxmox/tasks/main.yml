@@ -24,6 +24,6 @@
     name: requests
     state: present
 
-- name: Update ansible
-  pip:
-    name: ansible==11.1.0
+    # - name: Update ansible
+    #  pip:
+    # name: ansible==11.1.0
