@@ -1,4 +1,10 @@
+install python + pip + pip install ansible
+
 add to .bashrc:
    export PROXMOX_PASSWORD="your-password" # needed to not expose password in repo
 
 ansible-galaxy collection install community.general
+ansible-playbook playbooks/initalProxmoxSetup.yml --ask-pass
+
+# then all other playbooks, example:
+ansible-playbook playbooks/createContainerForAleTavern.yml --ask-pass
