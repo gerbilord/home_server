@@ -3,3 +3,6 @@
     proxmox_node: "proxmox" # for me, its just the host name
     proxmox_password: "{{ lookup('ansible.builtin.env', 'PROXMOX_PASSWORD') }}"
     gateway_ip: "192.168.1.1"
+
+    debianTemplate: "debian-12-standard_12.7-1_amd64.tar.zst" # gotten from: pvesh available
+    ubuntuTemplate: "ubuntu-24.10-standard_24.10-1_amd64.tar.zst"

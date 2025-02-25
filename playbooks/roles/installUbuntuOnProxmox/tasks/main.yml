@@ -1,18 +1,18 @@
 - name: Check if template exists
   ansible.builtin.stat:
-    path: "/var/lib/vz/template/cache/ubuntu-24.10-standard_24.10-1_amd64.tar.zst"
+    path: "/var/lib/vz/template/cache/{{ lxc_template }}"
   register: template_stat
 
-- name: Download Ubuntu 24.10 template
+- name: Download linux template in lxc_template
   ansible.builtin.shell:
-    cmd: "pveam download local ubuntu-24.10-standard_24.10-1_amd64.tar.zst"
-    creates: "/var/lib/vz/template/cache/ubuntu-24.10-standard_24.10-1_amd64.tar.zst"
+    cmd: "pveam download local {{ lxc_template }}"
+    creates: "/var/lib/vz/template/cache/{{ lxc_template }}"
   register: download_result
   when: not template_stat.stat.exists
 
 - name: Verify template download
   ansible.builtin.stat:
-    path: "/var/lib/vz/template/cache/ubuntu-24.10-standard_24.10-1_amd64.tar.zst"
+    path: "/var/lib/vz/template/cache/{{ lxc_template }}"
   register: verify_stat
 
 - name: Fail if template is not downloaded

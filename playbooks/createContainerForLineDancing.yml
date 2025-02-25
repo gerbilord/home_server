@@ -11,7 +11,6 @@
     lxc_template: "local:vztmpl/ubuntu-24.10-standard_24.10-1_amd64.tar.zst" # path gotten from command "pvesh get /nodes/proxmox/storage/local/content"
     container_name: "learnToLineDance"
     container_vmid: 241
-    container_ip: "192.168.1.241/24"
     gateway_ip: "192.168.1.1"
 
   roles:

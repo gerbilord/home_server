@@ -6,13 +6,15 @@
     password: "{{ proxmox_password }}"
     vmid: "{{ container_vmid }}"
     state: present
-    ostemplate: "{{ lxc_template }}"
+    ostemplate: "local:vztmpl/{{ lxc_template }}"
     disk: "local-lvm:20"
     hostname: "{{ container_name }}"
     memory: 16000
     cores: 4
     unprivileged: 1
-    netif: '{"net0":"name=eth0,gw={{ gateway_ip }},ip={{ container_ip }},firewall=1,bridge=vmbr0"}'
+    features:
+      - nesting=1 # nesting needed for internet sadly https://forum.proxmox.com/threads/solved-systemd-247-breaks-networking-in-lxc.80115/
+    netif: '{"net0":"name=eth0,gw={{ gateway_ip }},ip=192.168.1.{{ container_vmid }}/24,firewall=1,bridge=vmbr0"}'
 
 - name: Get container status
   command: "pct status {{ container_vmid }}"
@@ -21,7 +23,7 @@
 
 - name: Make sure container is started
   community.general.proxmox:
-    vmid: "{{ container_vmid}}"
+    vmid: "{{ container_vmid }}"
     node: "{{ proxmox_node }}"
     api_user: "{{ proxmox_user }}"
     api_host: "{{ proxmox_host }}"

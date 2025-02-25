@@ -1,37 +1,37 @@
 ---
 - name: Configure container networking and add nameserver if missing
   block:
-    - name: Create service to fix interent on boot. (jank)
-      shell: |
-        pct exec {{ container_vmid }} -- sh -c 'cat <<EOF > /etc/systemd/system/lxc-network-fix.service
-        [Unit]
-        Description=Fix LXC network on boot
-        After=network.target
+#    - name: Create service to fix interent on boot. (jank)
+#      shell: |
+#        pct exec {{ container_vmid }} -- sh -c 'cat <<EOF > /etc/systemd/system/lxc-network-fix.service
+#        [Unit]
+#        Description=Fix LXC network on boot
+#        After=network.target
+#
+#        [Service]
+#        Type=oneshot
+#        ExecStart=/sbin/ip addr add 192.168.1.{{ container_vmid }}/24 dev eth0
+#        ExecStart=/sbin/ip link set eth0 up
+#        ExecStart=/sbin/ip route add default via {{ gateway_ip }}
+#        RemainAfterExit=yes
+#
+#        [Install]
+#        WantedBy=multi-user.target
+#        EOF'
+#      changed_when: false
+#      notify: Reload systemd
 
-        [Service]
-        Type=oneshot
-        ExecStart=/sbin/ip addr add 192.168.1.{{ container_vmid }}/24 dev eth0
-        ExecStart=/sbin/ip link set eth0 up
-        ExecStart=/sbin/ip route add default via {{ gateway_ip }}
-        RemainAfterExit=yes
-
-        [Install]
-        WantedBy=multi-user.target
-        EOF'
-      changed_when: false
-      notify: Reload systemd
-
-    - name: Ensure systemd is reloaded inside LXC
-      shell: pct exec {{ container_vmid }} -- systemctl daemon-reload
-      changed_when: false
-
-    - name: Enable systemd internet service inside LXC
-      shell: pct exec {{ container_vmid }} -- systemctl enable lxc-network-fix.service
-      changed_when: false
-
-    - name: Start systemd internet service inside LXC
-      shell: pct exec {{ container_vmid }} -- systemctl start lxc-network-fix.service
-      changed_when: false
+#    - name: Ensure systemd is reloaded inside LXC
+#      shell: pct exec {{ container_vmid }} -- systemctl daemon-reload
+#      changed_when: false
+#
+#    - name: Enable systemd internet service inside LXC
+#      shell: pct exec {{ container_vmid }} -- systemctl enable lxc-network-fix.service
+#      changed_when: false
+#
+#    - name: Start systemd internet service inside LXC
+#      shell: pct exec {{ container_vmid }} -- systemctl start lxc-network-fix.service
+#      changed_when: false
 
     - name: Set nameserver to /etc/resolv.conf in container
       command: pct exec {{ container_vmid }} -- sh -c "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
