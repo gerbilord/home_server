@@ -1,1 +1,4 @@
-proxmox_password: "{{ lookup('ansible.builtin.env', 'PROXMOX_PASSWORD') }}"
+    proxmox_host: "proxmox"  # Proxmox API on localhost
+    proxmox_user: "root@pam"
+    proxmox_node: "proxmox" # for me, its just the host name
+    proxmox_password: "{{ lookup('ansible.builtin.env', 'PROXMOX_PASSWORD') }}"
