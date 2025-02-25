@@ -1,0 +1,16 @@
+---
+- name: Bootstrap Python on Proxmox using raw commands
+  hosts: proxmox
+  remote_user: root
+  gather_facts: no      # Avoid gathering facts (which would use the broken interpreter)
+  become: yes
+  tasks:
+    - name: Ensure python3-venv is installed
+      raw: |
+        apt-get update && apt-get install -y python3-venv
+
+    - name: Create the virtual environment if it doesn't exist
+      raw: python3 -m venv /root/python_virtual_env
+      args:
+        creates: /root/python_virtual_env/bin/python
+
