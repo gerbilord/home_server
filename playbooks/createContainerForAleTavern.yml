@@ -10,7 +10,7 @@
 
   roles:
     - setupPythonEnvAndInstallPackagesOnProxmox
-    - installUbuntuOnProxmox
+    - downloadLinuxTemplateOnProxmox
     - createStandardLxc
     - addStandardFirewall
     - setupLxcInternet
