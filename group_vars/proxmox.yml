@@ -2,3 +2,4 @@
     proxmox_user: "root@pam"
     proxmox_node: "proxmox" # for me, its just the host name
     proxmox_password: "{{ lookup('ansible.builtin.env', 'PROXMOX_PASSWORD') }}"
+    gateway_ip: "192.168.1.1"
