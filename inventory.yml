@@ -2,3 +2,7 @@ proxmox:
         hosts:
                 192.168.1.193: 
                         ansible_python_interpreter: "/root/python_virtual_env/bin/python"
+
+caddy:
+        hosts:
+                192.168.1.240

@@ -4,7 +4,7 @@
   gather_facts: false
   become: true
   vars:
-    lxc_template: "{{ ubuntuTemplate }}"
+    lxc_template: "{{ debianTemplate }}"
     container_name: "caddy"
     container_vmid: 240
 
@@ -14,3 +14,96 @@
     - createStandardLxc
     - addStandardFirewall
     - setupLxcInternet
+
+  tasks:
+    - name: Pause for 5 seconds for network to be setup
+      ansible.builtin.pause:
+        seconds: 5
+
+- name: Setup Caddy container
+  hosts: caddy
+  remote_user: root
+  gather_facts: false
+  become: true
+  vars:
+    repo: "home_server_caddy"
+    repo_dest: /root/home_server_caddy
+  vars_prompt:
+    - name: "githubuser"
+      prompt: "Enter your github username"
+      private: no
+    - name: "githubpassword"
+      prompt: "Enter your github password"
+      private: yes
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install git
+      apt:
+        name: git
+        state: present
+
+    - name: Setup Caddy on container
+      ansible.builtin.git:
+        repo: https://{{ githubuser | urlencode }}:{{ githubpassword | urlencode }}@github.com/{{ githubuser }}/{{ repo }}.git
+        dest: "{{ repo_dest }}"
+
+    - name: Install required packages for repository setup
+      apt:
+        name:
+          - debian-keyring
+          - debian-archive-keyring
+          - apt-transport-https
+          - curl
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Download and add Caddy GPG key
+      ansible.builtin.get_url:
+        url: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+        dest: /tmp/caddy-key.gpg
+      become: yes
+
+    - name: Install Caddy GPG key
+      ansible.builtin.shell: cat /tmp/caddy-key.gpg | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+      args:
+        creates: /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+      become: yes
+
+    - name: Add Caddy repository
+      ansible.builtin.get_url:
+        url: https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt
+        dest: /etc/apt/sources.list.d/caddy-stable.list
+      become: yes
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      become: yes
+
+    - name: Install Caddy
+      apt:
+        name: caddy
+        state: present
+      become: yes
+
+    - name: Ensure Caddy service is running and enabled
+      service:
+        name: caddy
+        state: started
+        enabled: yes
+
+    - name: Reload Caddy
+      ansible.builtin.command: caddy reload --config /root/home_server_caddy/Caddyfile
+
+
+#    - name: Ensure remote URL does not contain github credentials
+#      git_config:
+#        name: remote.origin.url
+#        value: https://github.com/{{ githubuser }}/{{ repo }}.git
+#        scope: local
+#        repo: https://{{ githubuser | urlencode }}:{{ githubpassword | urlencode }}@github.com/{{ githubuser }}/{{ repo }}.git
