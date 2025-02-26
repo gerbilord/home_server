@@ -1,4 +1,39 @@
 ##################################
+# Pi 4 - Debian - Frigate setup
+##################################
+sudo apt update
+sudo apt upgrade -y
+curl -sSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+logout
+sudo mkdir -p /opt/stacks/frigate-nvr
+sudo mkdir -p /opt/stacks/frigate-nvr/storage
+vim /opt/stacks/frigate-nvr/config.yml
+sudo vim.tiny /opt/stacks/frigate-nvr/config.yml
+sudo vim.tiny /opt/stacks/frigate-nvr/docker-compose.yml
+cd /opt/stacks/frigate-nvr
+docker compose up -d
+docker compose logs | grep Password:
+
+go to: https://frigate.local:8971/
+username: admin + password: grepped password
+
+# Settings > Configuration editor #
+mqtt:
+  host: localhost
+  port: 1883
+
+cameras:
+  tapo_c120:
+    ffmpeg:
+      inputs:
+        - path: rtsp://artemis:artemis@192.168.1.155:554/stream1
+          roles:
+            - record
+    detect:
+      enabled: false
+version: 0.14
+##################################
 # Caddy server notes
 ##################################
 apt update
