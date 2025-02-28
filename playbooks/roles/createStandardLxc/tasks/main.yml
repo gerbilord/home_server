@@ -7,10 +7,10 @@
     vmid: "{{ container_vmid }}"
     state: present
     ostemplate: "local:vztmpl/{{ lxc_template }}"
-    disk: "local-lvm:20"
+    disk: "local-lvm:{{ disk_size | default(20) }}"
     hostname: "{{ container_name }}"
-    memory: 16000
-    cores: 4
+    memory: "{{ memory | default(16000) }}"
+    cores: "{{ cores | default(4) }}"
     unprivileged: 1
     features:
       - nesting=1 # nesting needed for internet sadly https://forum.proxmox.com/threads/solved-systemd-247-breaks-networking-in-lxc.80115/
