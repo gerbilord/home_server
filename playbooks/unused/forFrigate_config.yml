@@ -1,0 +1,21 @@
+mqtt:
+  enabled: false
+cameras:
+  turrent_bastet:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:admin@192.168.1.135:554/cam/realmonitor?channel=1&subtype=0
+          roles:
+            - detect
+    detect:
+      enabled: false
+  wifi_artemis:
+    ffmpeg:
+      inputs:
+        - path: rtsp://artemis:artemis@192.168.1.155:554/stream1
+          roles:
+            - detect
+    detect:
+      enabled: false
+
+version: 0.15-1

@@ -1,0 +1,16 @@
+- name: Create Docker LXC container
+  hosts: proxmox
+  remote_user: root 
+  gather_facts: false
+  become: true
+  vars:
+    lxc_template: "{{ debianTemplate }}"
+    container_name: "docker"
+    container_vmid: 250
+
+  roles:
+    - setupPythonEnvAndInstallPackagesOnProxmox
+    - downloadLinuxTemplateOnProxmox
+    - createStandardLxc
+    - addStandardFirewall
+    - setupLxcInternet
