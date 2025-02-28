@@ -1,4 +1,20 @@
 ##################################
+# Minecraft server setup
+##################################
+# Need to open port 25565 on network
+cd /opt
+apt update
+wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
+dpkg -i jdk-21_linux-x64_bin.deb
+mkdir ~/minecraft
+cd ~/minecraft
+wget https://piston-data.mojang.com/v1/objects/4707d00eb834b446575d89a61a11b5d548d8c001/server.jar -O minecraft_server.1.21.4.jar
+sed -i 's/eula=false/eula=true/' eula.txt
+apt install screen
+screen java -Xmx16384M -Xms16384M -jar minecraft_server.1.21.4.jar nogui
+Ctrl+A - D
+screen -r
+##################################
 # Pi 4 - Debian - Frigate setup
 ##################################
 sudo apt update
