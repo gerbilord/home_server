@@ -1,0 +1,147 @@
+- name: Create LXC container on local Proxmox server
+  hosts: proxmox
+  remote_user: root 
+  gather_facts: false
+  become: true
+  vars:
+    lxc_template: "{{ debianTemplate }}"
+    container_name: "minecraft"
+    container_vmid: 243 # need to open minecraft port on router
+    # disk_size: 20
+    memory: 100000
+    cores: 32
+
+  roles:
+    - setupPythonEnvAndInstallPackagesOnProxmox
+    - downloadLinuxTemplateOnProxmox
+    - createStandardLxc
+    - addStandardFirewall
+    - setupLxcInternet
+
+#  tasks:
+#    - name: Pause for 20 seconds for network to be setup
+#      ansible.builtin.pause:
+#        seconds: 20
+
+- name: Setup minecraft container
+  hosts: minecraft
+  remote_user: root
+  gather_facts: false
+  become: true
+  vars:
+    minecraft_dir: "root/minecraft"
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install screen package
+      apt:
+        name: screen
+        state: present
+
+    - name: Install curl package
+      apt:
+        name: curl
+        state: present
+
+    - name: Install unzip package
+      apt:
+        name: unzip
+        state: present
+
+    - name: Download Oracle JDK 21 Debian package
+      get_url:
+        url: "https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb"
+        dest: "/opt/jdk-21_linux-x64_bin.deb"
+        mode: '0644'
+
+    - name: Install Oracle JDK 21
+      command: dpkg -i /opt/jdk-21_linux-x64_bin.deb
+      args:
+        chdir: /opt
+
+    - name: Create Minecraft directory
+      file:
+        path: "{{ minecraft_dir }}"
+        state: directory
+        mode: '0755'
+
+#    - name: Download Minecraft server jar
+#      get_url:
+#        url: "https://piston-data.mojang.com/v1/objects/4707d00eb834b446575d89a61a11b5d548d8c001/server.jar"
+#        dest: "{{ minecraft_dir }}/minecraft_server.1.21.4.jar"
+#        mode: '0755'
+
+    - name: Download Better MC server
+      get_url:
+        url: "https://mediafilez.forgecdn.net/files/6048/96/BMC4_Server_Pack_v36.zip"
+        dest: "{{ minecraft_dir }}/BMC4_Server_Pack_v36.zip"
+        mode: '0755'
+
+    - name: Unarchive minecraft file that is already on the remote machine
+      ansible.builtin.unarchive:
+        src: "{{ minecraft_dir }}/BMC4_Server_Pack_v36.zip"
+        dest: "{{ minecraft_dir }}"
+        remote_src: yes
+
+    - name: Ensure start.sh is executable
+      ansible.builtin.file:
+        path: "{{ minecraft_dir }}/start.sh"
+        mode: '0755'
+
+
+    - name: Check if Minecraft screen session exists
+      shell: screen -ls | grep -q "minecraft"
+      register: minecraft_screen_check
+      ignore_errors: true
+
+#    - name: Start Minecraft server just to create eula.txt
+#      command: java -Xmx100000M -Xms100000M -jar minecraft_server.1.21.4.jar nogui
+#      args:
+#        chdir: "{{ minecraft_dir }}"
+#      ignore_errors: true
+#      when: minecraft_screen_check.rc != 0
+
+#    - name: Ensure Minecraft EULA is accepted
+#      lineinfile:
+#        path: "{{ minecraft_dir }}/eula.txt"
+#        regexp: '^eula='
+#        line: 'eula=true'
+#      when: minecraft_screen_check.rc != 0
+
+    - name: Add memory to server
+      lineinfile:
+        path: "{{ minecraft_dir }}/variables.txt"
+        regexp: '^JAVA_ARGS='
+        line: 'JAVA_ARGS="-Xmx100G -Xms100G"'
+      when: minecraft_screen_check.rc != 0
+
+    - name: Make server normal
+      lineinfile:
+        path: "{{ minecraft_dir }}/server.properties"
+        regexp: '^difficulty='
+        line: 'difficulty=normal'
+      when: minecraft_screen_check.rc != 0
+
+    - name: Give a slightly bigger view distance
+      lineinfile:
+        path: "{{ minecraft_dir }}/server.properties"
+        regexp: '^view-distance='
+        line: 'view-distance=14'
+      when: minecraft_screen_check.rc != 0
+
+    - name: Allow more players
+      lineinfile:
+        path: "{{ minecraft_dir }}/server.properties"
+        regexp: '^max-players='
+        line: 'max-players=50'
+      when: minecraft_screen_check.rc != 0
+
+    - name: Start Minecraft server in detached screen session
+      command: screen -dmS minecraft ./start.sh # YOU WILL HAVE TO TYPE I AGREE TWICE
+      args:
+        chdir: "{{ minecraft_dir }}"
+      when: minecraft_screen_check.rc != 0
+
