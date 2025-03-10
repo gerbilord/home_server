@@ -1,5 +1,10 @@
 ##################################
 # Beelink setup notes (bare debian install)
+# I googled things like this earlier
+# https://www.reddit.com/r/MiniPCs/comments/1htxoi6/beelink_mini_s13_intel_n150_linux_driver_issues/
+# https://www.reddit.com/r/debian/comments/1ea652e/n100_mini_pc_and_backport_new_kernel/
+# https://www.reddit.com/r/BeelinkOfficial/comments/1fpc8rc/help_needed_installing_correct_drivers_for/
+# https://gist.github.com/dudewheresmycode/6ac56fa7d59fcfbf4574e627ffaa3585
 ##################################
 # Basics
 vim.tiny /etc/apt/sources.list <----- this may need to be fixed
