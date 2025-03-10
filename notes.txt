@@ -1,4 +1,56 @@
 ##################################
+# Beelink setup notes (bare debian install)
+##################################
+# Basics
+vim.tiny /etc/apt/sources.list <----- this may need to be fixed
+apt update
+apt full-upgrade
+
+# Tailscale + SSH
+apt install curl
+curl -fsSl https://tailscale.com/install.sh | sh
+tailscale up
+apt install openssh-server # Needed for ssh
+vim.tiny /etc/ssh/sshd_config # edit PermitRootLogin Yes
+systemd restart sshd
+
+# Network manager pain
+apt install network-manager
+nmcli device wifi connect "SSID" password "PASSWORD" # THIS MAY FAIL FIRST TIME AROUND
+nmcli dev status # tells you what is has, should have some TYPE = wifi, if not will need a fixin'
+
+# Network fixin' (may also need Firmware backport section + hardware section below)
+dmesg | grep iwlwifi <------ LISTEN TO THIS ERROR MESSAGE, it will tell you which driver to get
+cd /lib/firmware
+wget https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/iwlwifi-so-a0-hr-b0-89.ucode
+apt install firmware-iwlwifi            # unsure - something about drivers
+modprobe -r iwlwifi && modprobe iwlwifi # unsure - something about drivers
+nmcli device wifi list
+nmcli device wifi connect "SSID" password "PASSWORD" ifname wlo1 # add wifi
+nmcli device status # tells if network manager knows whats going on
+ip a     # list details about internets
+ip route # gives details on which internet is being used
+
+# Get hardware info
+lspci -nnk | grep -A 3 -i network 
+lspci -nnk | grep -A2 0280
+lspci -k | grep -A 3 -i network
+
+# Firmware stuff, idk
+apt install firmware-iwlwifi
+modprobe -r iwlwifi
+update-initramfs -u
+apt install -t bookworm-backports linux-image-amd64 # see https://forums.debian.net/viewtopic.php?t=159363
+apt install -t bookworm-backports firmware-iwlwifi
+
+
+# Get debug info, probably very useful
+dmesg
+dmesg | grep iwlwifi (use error messages to decide which ucode file to get)
+uname -r # kernel version
+lsb_release -a # debian version
+
+##################################
 # Minecraft server setup
 ##################################
 # Need to open port 25565 on network
