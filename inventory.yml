@@ -10,3 +10,7 @@ caddy:
 minecraft:
         hosts:
                 192.168.1.243
+
+minecraft-bedrock:
+        hosts:
+                192.168.1.244

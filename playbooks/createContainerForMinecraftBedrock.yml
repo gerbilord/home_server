@@ -5,11 +5,11 @@
   become: true
   vars:
     lxc_template: "{{ debianTemplate }}"
-    container_name: "minecraft"
-    container_vmid: 243 # need to open minecraft port on router
+    container_name: "minecraft-bedrock"
+    container_vmid: 244 # need to open minecraft port on router both upd and tcp + change host below + add fw + add host
     # disk_size: 20
-    memory: 100000
-    cores: 32
+    memory: 20000
+    cores: 8
 
   roles:
     - setupPythonEnvAndInstallPackagesOnProxmox
@@ -24,12 +24,12 @@
 #        seconds: 20
 
 - name: Setup minecraft container
-  hosts: minecraft
+  hosts: minecraft-bedrock  # <--------------------------------------------------------- DONT FORGET TO CHANGE THIS
   remote_user: root
   gather_facts: false
   become: true
   vars:
-    minecraft_dir: "root/minecraft"
+    minecraft_dir: "minecraft"
 
   tasks:
     - name: Update apt cache
@@ -39,6 +39,16 @@
     - name: Install screen package
       apt:
         name: screen
+        state: present
+
+    - name: Install unzip
+      apt:
+        name: unzip
+        state: present
+
+    - name: Install libcurl needed for bedrock
+      apt:
+        name: libcurl4
         state: present
 
     - name: Download Oracle JDK 21 Debian package
@@ -58,10 +68,10 @@
         state: directory
         mode: '0755'
 
-    - name: Download Minecraft server jar
+    - name: Download Bedrock Minecraft server zip
       get_url:
-        url: "https://piston-data.mojang.com/v1/objects/4707d00eb834b446575d89a61a11b5d548d8c001/server.jar"
-        dest: "{{ minecraft_dir }}/minecraft_server.1.21.4.jar"
+        url: "https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.62.01.zip"
+        dest: "{{ minecraft_dir }}/bedrock-server-1.21.62.01.zip"
         mode: '0755'
 
     - name: Check if Minecraft screen session exists
@@ -69,33 +79,17 @@
       register: minecraft_screen_check
       ignore_errors: true
 
-    - name: Start Minecraft server just to create eula.txt
-      command: java -Xmx100000M -Xms100000M -jar minecraft_server.1.21.4.jar nogui
-      args:
-        chdir: "{{ minecraft_dir }}"
-      ignore_errors: true
-      when: minecraft_screen_check.rc != 0
-
-
-    - name: Ensure Minecraft EULA is accepted
-      lineinfile:
-        path: "{{ minecraft_dir }}/eula.txt"
-        regexp: '^eula='
-        line: 'eula=true'
-      when: minecraft_screen_check.rc != 0
+    - name: Unarchive server download
+      ansible.builtin.unarchive:
+        src: "{{ minecraft_dir }}/bedrock-server-1.21.62.01.zip"
+        dest: "{{ minecraft_dir }}"
+        remote_src: yes
 
     - name: Make server normal
       lineinfile:
         path: "{{ minecraft_dir }}/server.properties"
         regexp: '^difficulty='
         line: 'difficulty=normal'
-      when: minecraft_screen_check.rc != 0
-
-    - name: Give a slightly bigger view distance
-      lineinfile:
-        path: "{{ minecraft_dir }}/server.properties"
-        regexp: '^view-distance='
-        line: 'view-distance=14'
       when: minecraft_screen_check.rc != 0
 
     - name: Allow more players
@@ -105,13 +99,11 @@
         line: 'max-players=50'
       when: minecraft_screen_check.rc != 0
 
-
-    - name: Start Minecraft server in detached screen session
-      command: screen -dmS minecraft java -Xmx100000M -Xms100000M -jar minecraft_server.1.21.4.jar nogui
+    - name: Start Minecraft
+      command: screen -dmS minecraft ./bedrock_server
       args:
         chdir: "{{ minecraft_dir }}"
+      ignore_errors: true
       when: minecraft_screen_check.rc != 0
 
-# Setup auto save: needs work
-# crontab: 0 3 * * * cd /root/root/minecraft && git add . && git commit -m "Saving Minecraft world" && git push
-# git remote set-url origin https://gerbilord:INSERT_TOKEN@github.com/gerbilord/heckyya_minecraft.git
+

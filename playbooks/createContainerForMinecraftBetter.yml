@@ -145,3 +145,6 @@
         chdir: "{{ minecraft_dir }}"
       when: minecraft_screen_check.rc != 0
 
+# Setup auto save: needs work
+# crontab: 0 3 * * * cd /root/root/minecraft && git add . && git commit -m "Saving Minecraft world" && git push
+# git remote set-url origin https://gerbilord:INSERT_TOKEN@github.com/gerbilord/heckyya_minecraft.git
