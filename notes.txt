@@ -1,3 +1,8 @@
+# Git setup for every machine #
+git config --global credential.helper store
+git config --global user.email "cois.alessandro@gmail.com"
+git config --global user.name "Gerbilord"
+
 ##################################
 # Beelink setup notes (bare debian install)
 # I googled things like this earlier
@@ -55,6 +60,18 @@ dmesg | grep iwlwifi (use error messages to decide which ucode file to get)
 uname -r # kernel version
 lsb_release -a # debian version
 
+# Frigate stuff
+# https://pimylifeup.com/raspberry-pi-frigate-nvr/
+# https://docs.frigate.video/guides/getting_started/
+curl -sSL https://get.docker.com | sh
+
+# (venv) root@outpost-sobey:~/frigate# ls
+# config  config.yml  docker-compose.yml  storage
+docker compose up -d # -d means detached
+docker compose logs | grep Password:
+
+https://100.85.10.71:8971/login
+admin + password
 ##################################
 # Minecraft server setup
 ##################################
