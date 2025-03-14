@@ -29,7 +29,7 @@
   gather_facts: false
   become: true
   vars:
-    minecraft_dir: "root/minecraft"
+    minecraft_dir: "minecraft"
 
   tasks:
     - name: Update apt cache
@@ -111,6 +111,21 @@
       args:
         chdir: "{{ minecraft_dir }}"
       when: minecraft_screen_check.rc != 0
+
+# root@minecraft:~/minecraft# cat ops.json
+#[
+#  {
+#    "uuid": "d1420e66-26d2-4a12-8336-cf8202ed03ad",
+#    "name": "Gerbil_Lord",
+#    "level": 4,
+#    "bypassesPlayerLimit": false
+#  }
+#  {
+#    "uuid":"20bc6d3c-9e95-4041-9835-00196633712f",
+#    "name":"Heckyya",
+#    "level": 3
+#  }
+#]
 
 # Setup auto save: needs work
 # crontab: 0 3 * * * cd /root/root/minecraft && git add . && git commit -m "Saving Minecraft world" && git push

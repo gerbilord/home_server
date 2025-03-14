@@ -106,4 +106,21 @@
       ignore_errors: true
       when: minecraft_screen_check.rc != 0
 
+# Modify server.properties to have allow-cheats=true
+# instead of false
+
+# root@minecraft-bedrock:~/minecraft# head server.properties
+#server-name=Yippie!
+
+# root@minecraft-bedrock:~/minecraft# cat permissions.json
+#[
+#   {
+#      "permission" : "operator",
+#      "xuid" : "2535468601967936"
+#   }, xs
+#   {
+#      "permission" : "operator",
+#      "xuid" : "2535419960926897"
+#   }
+#]
 
