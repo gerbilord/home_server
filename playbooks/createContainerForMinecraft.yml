@@ -60,8 +60,8 @@
 
     - name: Download Minecraft server jar
       get_url:
-        url: "https://piston-data.mojang.com/v1/objects/4707d00eb834b446575d89a61a11b5d548d8c001/server.jar"
-        dest: "{{ minecraft_dir }}/minecraft_server.1.21.4.jar"
+        url: "https://piston-data.mojang.com/v1/objects/e6ec2f64e6080b9b5d9b471b291c33cc7f509733/server.jar"
+        dest: "{{ minecraft_dir }}/minecraft_server.1.21.5.jar"
         mode: '0755'
 
     - name: Check if Minecraft screen session exists
@@ -70,7 +70,7 @@
       ignore_errors: true
 
     - name: Start Minecraft server just to create eula.txt
-      command: java -Xmx100000M -Xms100000M -jar minecraft_server.1.21.4.jar nogui
+      command: java -Xmx100000M -Xms100000M -jar minecraft_server.1.21.5.jar nogui
       args:
         chdir: "{{ minecraft_dir }}"
       ignore_errors: true
@@ -88,7 +88,7 @@
       lineinfile:
         path: "{{ minecraft_dir }}/server.properties"
         regexp: '^difficulty='
-        line: 'difficulty=normal'
+        line: 'difficulty=hard'
       when: minecraft_screen_check.rc != 0
 
     - name: Give a slightly bigger view distance
@@ -107,7 +107,7 @@
 
 
     - name: Start Minecraft server in detached screen session
-      command: screen -dmS minecraft java -Xmx100000M -Xms100000M -jar minecraft_server.1.21.4.jar nogui
+      command: screen -dmS minecraft java -Xmx100000M -Xms100000M -jar minecraft_server.1.21.5.jar nogui
       args:
         chdir: "{{ minecraft_dir }}"
       when: minecraft_screen_check.rc != 0
