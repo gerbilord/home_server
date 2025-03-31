@@ -128,5 +128,9 @@
 #]
 
 # Setup auto save: needs work
-# crontab: 0 3 * * * cd /root/root/minecraft && git add . && git commit -m "Saving Minecraft world" && git push
-# git remote set-url origin https://gerbilord:INSERT_TOKEN@github.com/gerbilord/heckyya_minecraft.git
+# Set timezone: timedatectl set-timezone America/Los_Angeles
+
+# Crontab -e
+# 0 6 * * * /root/minecraft/backup_minecraft.sh
+# 0 18 * * * /root/minecraft/backup_minecraft.sh
+# 0 23 * * * /root/minecraft/backup_minecraft.sh
