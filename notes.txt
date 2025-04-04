@@ -41,6 +41,10 @@ nmcli device status # tells if network manager knows whats going on
 ip a     # list details about internets
 ip route # gives details on which internet is being used
 
+# setup ethernet properly
+nmcli connection modify "enp1s0" connection.autoconnect yes
+nmcli connection modify "enp1s0" connection.autoconnect-priority 10
+
 # Get hardware info
 lspci -nnk | grep -A 3 -i network 
 lspci -nnk | grep -A2 0280
